@@ -1,0 +1,30 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/kalpa-labs-openapi-original.json
+docs: https://docs.kalpalabs.ai/authentication
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  provisioning: per-team, early access (request via hello@kalpalabs.ai)
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  scheme: bearer
+  header_primary: Authorization
+  header_primary_format: 'Bearer <key>'
+  header_alternate: X-API-Key
+  description: >-
+    Every /v1/* endpoint authenticates with a per-team API key, sent as a bearer
+    token in the Authorization header (preferred) or in the X-API-Key header.
+    A missing or invalid key returns 401 authentication_error; if key verification
+    is temporarily unavailable the API returns 503 service_unavailable (retry, do
+    not treat as invalid).
+  sources:
+  - openapi/kalpa-labs-openapi-original.json
+notes:
+  - Keys are secret; call the API server-side, never from browsers or shipped apps.
+  - Keys are rotated / limits raised by contacting hello@kalpalabs.ai.
+  - Each key carries its own rate limits and its own usage meter (GET /v1/usage).
