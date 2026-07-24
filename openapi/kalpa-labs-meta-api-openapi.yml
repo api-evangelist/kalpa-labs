@@ -1,0 +1,240 @@
+openapi: 3.1.0
+info:
+  contact:
+    name: Kalpa Labs
+    url: https://kalpalabs.ai/
+  description: 'The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker
+
+    conversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.
+
+
+    **Authentication.** Every `/v1` request needs an API key, sent either as
+
+    `Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.
+
+
+    **Rate limits.** Requests are metered per key. When you exceed your limit you receive
+
+    `429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.
+
+
+    **Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).
+
+
+    This document is the single source of truth for the contract — the docs reference, the studio''s
+
+    typed client, and the SDKs are all generated from it.
+
+    '
+  license:
+    name: Proprietary
+  title: Kalpa Speech Meta API
+  version: 0.1.0
+servers:
+- description: Production
+  url: https://api.kalpalabs.ai
+- description: Local development
+  url: http://localhost:8080
+tags:
+- description: Health checks and capability discovery.
+  name: Meta
+paths:
+  /health:
+    get:
+      operationId: health_health_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: Successful Response
+      summary: Liveness probe
+      tags:
+      - Meta
+  /v1/info:
+    get:
+      operationId: info_v1_info_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoResponse'
+          description: Successful Response
+      security:
+      - ApiKeyAuth: []
+      summary: Backend info, default params, and limits
+      tags:
+      - Meta
+  /v1/models:
+    get:
+      operationId: models_v1_models_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponse'
+          description: Successful Response
+      security:
+      - ApiKeyAuth: []
+      summary: List available public models
+      tags:
+      - Meta
+  /v1/voices:
+    get:
+      operationId: voices_v1_voices_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoicesResponse'
+          description: Successful Response
+      security:
+      - ApiKeyAuth: []
+      summary: List available named voices
+      tags:
+      - Meta
+components:
+  schemas:
+    ModelsResponse:
+      properties:
+        data:
+          description: The available public models.
+          items:
+            $ref: '#/components/schemas/ModelCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: ModelsResponse
+      type: object
+    HealthResponse:
+      properties:
+        backend:
+          title: Backend
+          type: string
+        ready:
+          title: Ready
+          type: boolean
+        status:
+          default: ok
+          title: Status
+          type: string
+      required:
+      - backend
+      - ready
+      title: HealthResponse
+      type: object
+    ModelCard:
+      description: One public model variant, as listed by ``GET /v1/models``.
+      properties:
+        default:
+          default: false
+          description: True for the model used when `model` is omitted.
+          title: Default
+          type: boolean
+        description:
+          default: ''
+          description: What this model is for.
+          title: Description
+          type: string
+        display_name:
+          description: Human-readable model name.
+          title: Display Name
+          type: string
+        id:
+          description: Stable public model id used in the `model` request field.
+          title: Id
+          type: string
+        modes:
+          description: 'Supported modes: subset of ["converse", "tts"].'
+          items:
+            type: string
+          title: Modes
+          type: array
+        speakers:
+          description: Valid role labels for a turn's `speaker`, in turn order (e.g. ["0", "1"]).
+          items:
+            type: string
+          title: Speakers
+          type: array
+      required:
+      - id
+      - display_name
+      - modes
+      - speakers
+      title: ModelCard
+      type: object
+    VoicesResponse:
+      properties:
+        data:
+          description: The available named voices.
+          items:
+            $ref: '#/components/schemas/VoiceCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: VoicesResponse
+      type: object
+    VoiceCard:
+      description: One named voice, as listed by ``GET /v1/voices``.
+      properties:
+        gender:
+          description: Perceived voice gender.
+          enum:
+          - feminine
+          - masculine
+          title: Gender
+          type: string
+        id:
+          description: Stable public voice id, used as the /v1/tts/{voice_id} path segment.
+          title: Id
+          type: string
+        name:
+          description: Human-readable voice name.
+          title: Name
+          type: string
+      required:
+      - id
+      - name
+      - gender
+      title: VoiceCard
+      type: object
+    InfoResponse:
+      properties:
+        backend:
+          additionalProperties: true
+          description: Active backend description (name, kind, sample_rate, …).
+          title: Backend
+          type: object
+        defaults:
+          additionalProperties: true
+          description: Default generation params.
+          title: Defaults
+          type: object
+        limits:
+          additionalProperties: true
+          description: Request-validation caps the gateway enforces.
+          title: Limits
+          type: object
+        param_schema:
+          description: UI metadata for the generation knobs.
+          items: {}
+          title: Param Schema
+          type: array
+      required:
+      - backend
+      - defaults
+      - limits
+      - param_schema
+      title: InfoResponse
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      description: 'Your Kalpa API key, sent as `Authorization: Bearer <key>` (or the `X-API-Key` header).'
+      scheme: bearer
+      type: http

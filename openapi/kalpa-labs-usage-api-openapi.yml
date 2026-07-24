@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  contact:
+    name: Kalpa Labs
+    url: https://kalpalabs.ai/
+  description: 'The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker
+
+    conversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.
+
+
+    **Authentication.** Every `/v1` request needs an API key, sent either as
+
+    `Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.
+
+
+    **Rate limits.** Requests are metered per key. When you exceed your limit you receive
+
+    `429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.
+
+
+    **Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).
+
+
+    This document is the single source of truth for the contract — the docs reference, the studio''s
+
+    typed client, and the SDKs are all generated from it.
+
+    '
+  license:
+    name: Proprietary
+  title: Kalpa Speech Meta Usage API
+  version: 0.1.0
+servers:
+- description: Production
+  url: https://api.kalpalabs.ai
+- description: Local development
+  url: http://localhost:8080
+tags:
+- description: Per-key usage and metering.
+  name: Usage
+paths:
+  /v1/usage:
+    get:
+      description: Running totals (requests, input characters, audio seconds) for the calling API key.
+      operationId: usage_v1_usage_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSummaryResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Missing or invalid API key.
+      security:
+      - ApiKeyAuth: []
+      summary: Your metered usage
+      tags:
+      - Usage
+components:
+  schemas:
+    ErrorResponse:
+      description: The envelope returned for every 4xx/5xx.
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+      - error
+      title: ErrorResponse
+      type: object
+    UsageSummaryResponse:
+      properties:
+        input_audio_seconds:
+          title: Input Audio Seconds
+          type: number
+        input_chars:
+          title: Input Chars
+          type: integer
+        key_id:
+          title: Key Id
+          type: string
+        last_request_ts:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Last Request Ts
+        output_audio_seconds:
+          title: Output Audio Seconds
+          type: number
+        requests:
+          title: Requests
+          type: integer
+      required:
+      - key_id
+      - requests
+      - input_chars
+      - input_audio_seconds
+      - output_audio_seconds
+      title: UsageSummaryResponse
+      type: object
+    ErrorBody:
+      properties:
+        message:
+          title: Message
+          type: string
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+        type:
+          title: Type
+          type: string
+      required:
+      - type
+      - message
+      title: ErrorBody
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      description: 'Your Kalpa API key, sent as `Authorization: Bearer <key>` (or the `X-API-Key` header).'
+      scheme: bearer
+      type: http
