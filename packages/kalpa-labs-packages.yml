@@ -1,0 +1,19 @@
+generated: '2026-07-19'
+method: searched
+source: https://github.com/kalpalabs
+notes: >-
+  No first-party client library for the Kalpa Speech REST API (/v1/tts, /v1/converse)
+  was found on npm, PyPI, or other registries as of this pass. The one published
+  first-party package is the VoiceAgent TypeScript SDK below (a distinct voice-agent
+  product). The PyPI/npm packages literally named "kalpa" are unrelated third-party
+  projects (a Pyramid traversal library and an automation tool) and are excluded.
+packages:
+- language: typescript
+  registry: npm
+  name: '@kalpalabs/voiceagent-sdk'
+  url: https://www.npmjs.com/package/@kalpalabs/voiceagent-sdk
+  install: npm install @kalpalabs/voiceagent-sdk
+  version: 0.0.2
+  official: true
+  product: VoiceAgent
+  source: https://github.com/kalpalabs/voiceagent-sdk

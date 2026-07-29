@@ -1,0 +1,57 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kalpalabs.ai
+docs:
+  authentication: https://docs.kalpalabs.ai/authentication
+  errors: https://docs.kalpalabs.ai/rate-limits-and-errors
+  usage: https://docs.kalpalabs.ai/usage
+conventions:
+  authentication:
+    style: api-key (bearer)
+    header: 'Authorization: Bearer <key>'
+    alternate_header: X-API-Key
+    ref: authentication/kalpa-labs-authentication.yml
+  idempotency:
+    supported: false
+    retry_safety: >-
+      All generation requests are safe to retry — nothing is committed on a failed
+      call — but there is no Idempotency-Key header; retries are not deduplicated.
+  pagination:
+    supported: false
+    notes: Registry endpoints (/v1/models, /v1/voices) return full lists; no pagination.
+  request_tracing:
+    request_id_response_header: X-Request-ID
+    request_id_request_header: X-Request-ID
+    echoed_in: error envelope (error.request_id) and provider logs
+    notes: Pass your own X-Request-ID to correlate with your systems.
+  rate_limit_signaling:
+    headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    retry_after_header: Retry-After
+    model: per-key token bucket (sustained requests/minute + burst capacity)
+    ref: rate-limits/kalpa-labs-rate-limits.yml
+  versioning:
+    scheme: uri-path
+    current: v1
+    model_registry: >-
+      Public model ids (kalpa-beta-v0.3 default, kalpa-atom-beta-v0.1, ...) are
+      versioned independently of the API path and selected per-request via the
+      `model` field; the response echoes the resolved public id.
+    ref: lifecycle/kalpa-labs-lifecycle.yml
+  error_envelope:
+    shape: '{ "error": { "type": "...", "message": "...", "request_id": "..." } }'
+    ref: errors/kalpa-labs-problem-types.yml
+  metering:
+    per_response: usage { input_chars, input_audio_seconds, output_audio_seconds }
+    running_totals: GET /v1/usage
+    ref: https://docs.kalpalabs.ai/usage
+  request_caps:
+    text_per_turn_chars: 8000
+    turns_per_conversation: 64
+    audio_per_turn: 25 MiB decoded WAV
+    served_live_at: GET /v1/info (under `limits`)
+  audio_format:
+    output: mono 16-bit PCM WAV at 24 kHz, base64 in audio.data_b64
+    input: 'base64 16-bit PCM WAV (data: URI prefix accepted)'

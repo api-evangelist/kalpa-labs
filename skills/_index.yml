@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/kalpa-labs-openapi-original.json
+skills:
+- file: kalpa-labs-text-to-speech.md
+  name: Kalpa text-to-speech
+  api: openapi/kalpa-labs-openapi-original.json
+  operations: [tts_v1_tts_post, tts_voice_v1_tts__voice_id__post, models_v1_models_get, voices_v1_voices_get]
+- file: kalpa-labs-converse.md
+  name: Kalpa conversation completion
+  api: openapi/kalpa-labs-openapi-original.json
+  operations: [converse_v1_converse_post, converse_stream_v1_converse_stream_post, models_v1_models_get]

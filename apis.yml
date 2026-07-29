@@ -1,22 +1,143 @@
 aid: kalpa-labs
 name: Kalpa Labs
-description: Kalpa Labs is a company surfaced as a portfolio company of y-combinator and added to the
-  API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Kalpa Labs is a San Francisco audio-research lab (Y Combinator Fall 2025) building
+  generalist speech models that unify text-to-speech, multi-speaker conversation, voice
+  cloning, and speech-in / speech-out reasoning behind one API — steerable with natural
+  instructions and in-context learning the way a large language model is. Their Kalpa
+  Speech API exposes stable public model ids over a clean REST interface: POST /v1/tts
+  turns text into 24 kHz WAV audio, POST /v1/converse completes the open turn of a
+  conversation (authored speech or contextual TTS), and a stateful WebSocket streams
+  multi-speaker sessions. The developer surface ships a committed OpenAPI 3.1 contract,
+  an AsyncAPI 3.0 WebSocket protocol, docs with a markdown twin per page, an llms.txt,
+  and a browser Studio playground. Founded by Prashant Shishodia and Gautam Jha.
 url: https://raw.githubusercontent.com/api-evangelist/kalpa-labs/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kalpalabs.ai/og.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
-x-tier: stub
-x-tier-reason: portfolio-lead
+- nexus-venture-partners
+- n1
+x-tier: active
+x-tier-reason: enriched
+x-location: San Francisco, CA
+x-yc-batch: F25
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Speech
+- Text to Speech
+- Voice
+- Audio
+- Conversational AI
+- Machine Learning
+- Artificial Intelligence
+apis:
+- aid: kalpa-labs:kalpa-labs-meta-api
+  name: Kalpa Labs Meta API
+  description: Health checks and capability discovery.
+  humanURL: https://docs.kalpalabs.ai
+  baseURL: https://api.kalpalabs.ai
+  tags:
+  - Meta
+  properties:
+  - type: OpenAPI
+    url: openapi/kalpa-labs-meta-api-openapi.yml
+  - type: AsyncAPI
+    url: asyncapi/kalpa-labs-converse-stream-asyncapi.json
+- aid: kalpa-labs:kalpa-labs-speech-api
+  name: Kalpa Labs Speech API
+  description: Text-to-speech and conversational generation.
+  humanURL: https://docs.kalpalabs.ai
+  baseURL: https://api.kalpalabs.ai
+  tags:
+  - Speech
+  properties:
+  - type: OpenAPI
+    url: openapi/kalpa-labs-speech-api-openapi.yml
+  - type: AsyncAPI
+    url: asyncapi/kalpa-labs-converse-stream-asyncapi.json
+- aid: kalpa-labs:kalpa-labs-usage-api
+  name: Kalpa Labs Usage API
+  description: Per-key usage and metering.
+  humanURL: https://docs.kalpalabs.ai
+  baseURL: https://api.kalpalabs.ai
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/kalpa-labs-usage-api-openapi.yml
+  - type: AsyncAPI
+    url: asyncapi/kalpa-labs-converse-stream-asyncapi.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: Website
+  url: https://kalpalabs.ai
+- type: DeveloperPortal
+  url: https://docs.kalpalabs.ai
+- type: Documentation
+  url: https://docs.kalpalabs.ai
+- type: APIReference
+  url: https://docs.kalpalabs.ai/reference
+- type: GettingStarted
+  url: https://docs.kalpalabs.ai/quickstart
+- type: Sandbox
+  url: https://studio.kalpalabs.ai
+- type: GitHubOrganization
+  url: https://github.com/kalpalabs
+- type: Support
+  url: mailto:hello@kalpalabs.ai
+- type: Authentication
+  url: authentication/kalpa-labs-authentication.yml
+- type: DomainSecurity
+  url: security/kalpa-labs-domain-security.yml
+- type: ErrorCatalog
+  url: errors/kalpa-labs-problem-types.yml
+- type: Conventions
+  url: conventions/kalpa-labs-conventions.yml
+- type: RateLimits
+  url: rate-limits/kalpa-labs-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/kalpa-labs-lifecycle.yml
+- type: MCPServer
+  url: mcp/kalpa-labs-mcp.yml
+- type: LLMsTxt
+  url: llms/kalpa-labs-llms.txt
+- type: Overlay
+  url: overlays/kalpa-labs-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/kalpa-labs-conformance.yml
+- type: DataModel
+  url: data-model/kalpa-labs-data-model.yml
+- type: Packages
+  url: packages/kalpa-labs-packages.yml
+- type: SDKs
+  url: packages/kalpa-labs-packages.yml
+- type: AsyncAPI
+  url: asyncapi/kalpa-labs-converse-stream-asyncapi.json
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

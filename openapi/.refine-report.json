@@ -1,0 +1,18 @@
+{
+  "provider": "kalpa-labs",
+  "sources": [
+    "kalpa-labs-meta-api-openapi.yml",
+    "kalpa-labs-speech-api-openapi.yml",
+    "kalpa-labs-usage-api-openapi.yml"
+  ],
+  "outputs": [
+    "kalpa-labs-meta-api-openapi.yml",
+    "kalpa-labs-speech-api-openapi.yml",
+    "kalpa-labs-usage-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

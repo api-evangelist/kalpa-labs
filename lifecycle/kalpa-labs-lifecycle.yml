@@ -1,0 +1,33 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kalpalabs.ai
+maturity: early access / open beta
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.kalpalabs.ai/models
+model_versioning:
+  registry_endpoint: GET /v1/models
+  scheme: >-
+    Stable public model ids hide checkpoints and infrastructure. Within a family
+    `beta-vN` increases with each new variant; newer is generally better.
+  families:
+  - id_prefix: kalpa-beta
+    current: kalpa-beta-v0.3
+    role: flagship (default when `model` is omitted)
+    kept: [kalpa-beta-v0.2, kalpa-beta-v0.1]
+  - id_prefix: kalpa-atom-beta
+    current: kalpa-atom-beta-v0.1
+    role: compact family (fastest / cheapest)
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: >-
+    No published deprecation policy or RFC 8594 Sunset/Deprecation header support
+    found as of this pass. Earlier model variants are kept available for comparison
+    rather than formally deprecated.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+deprecated_operations: []

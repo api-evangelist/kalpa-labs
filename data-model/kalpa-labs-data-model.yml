@@ -1,0 +1,53 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/kalpa-labs-openapi-original.json
+entities:
+- name: Conversation
+  description: An ordered list of turns, oldest first; the last (open) turn is completed by the model.
+  schema: ConverseRequest
+- name: ConversationTurn
+  description: One turn — speaker (positional role label), optional text, optional audio_wav_b64.
+  schema: ConversationTurnModel
+- name: ConverseReply
+  description: The completed open turn — speaker, authored/rendered text, and audio.
+  schema: ConverseReply
+- name: AudioPayload
+  description: Generated audio — format, sample_rate, audio_quality, base64 data_b64.
+  schema: AudioPayload
+- name: ModelCard
+  description: A public model registry entry — id, display_name, modes, speakers, default.
+  schema: ModelCard
+- name: VoiceCard
+  description: A stored voice usable with POST /v1/tts/{voice_id}.
+  schema: VoiceCard
+- name: Usage
+  description: Per-response metering — input_chars, input_audio_seconds, output_audio_seconds.
+  schema: Usage
+- name: UsageSummary
+  description: Running per-key totals returned by GET /v1/usage.
+  schema: UsageSummaryResponse
+relationships:
+- from: Conversation
+  to: ConversationTurn
+  kind: has_many
+  via: conversation[]
+- from: ConverseReply
+  to: AudioPayload
+  kind: has_one
+  via: audio
+- from: ConverseReply
+  to: Usage
+  kind: has_one
+  via: usage
+- from: ConversationTurn
+  to: AudioPayload
+  kind: has_one
+  via: audio_wav_b64 (input reference/spoken history)
+- from: ConversationTurn
+  to: ModelCard
+  kind: belongs_to
+  via: speaker labels are defined per ModelCard.speakers
+notes: >-
+  Voices (VoiceCard) and models (ModelCard) are the two reference registries;
+  every generation request selects a model by id and renders speakers by the
+  labels that model advertises.

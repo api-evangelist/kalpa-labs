@@ -1,0 +1,43 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kalpalabs.ai/rate-limits-and-errors
+model: per-key token bucket
+description: >-
+  Each API key has a sustained requests-per-minute allowance and a burst capacity
+  (a token bucket: `burst` requests available at once, refilling at the sustained
+  rate). Exact values are set per key at provisioning; raise them via hello@kalpalabs.ai.
+signaling_headers:
+- header: X-RateLimit-Limit
+  meaning: Your sustained requests/minute
+- header: X-RateLimit-Remaining
+  meaning: Requests left in the bucket right now
+- header: X-RateLimit-Reset
+  meaning: Seconds until the bucket refills
+- header: Retry-After
+  meaning: Seconds to wait after a 429
+over_limit:
+  status: 429
+  type: rate_limit_exceeded
+  guidance: Honor Retry-After and back off; all generation requests are safe to retry.
+rate_limits:
+- name: sustained-rpm
+  scope: per-key
+  limit_count: null
+  window: minute
+  note: Provisioned per key; not a fixed public value.
+- name: burst
+  scope: per-key
+  limit_count: null
+  window: instantaneous
+  note: Token-bucket burst capacity, provisioned per key.
+request_caps:
+- cap: text-per-request-or-turn
+  limit_count: 8000
+  unit: characters
+- cap: turns-per-conversation
+  limit_count: 64
+  unit: turns
+- cap: audio-per-turn
+  limit_count: 25
+  unit: MiB decoded WAV
+caps_served_at: GET /v1/info (under `limits`)

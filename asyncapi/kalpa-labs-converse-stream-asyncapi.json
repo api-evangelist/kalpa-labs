@@ -1,0 +1,556 @@
+{
+  "asyncapi": "3.0.0",
+  "channels": {
+    "converseStream": {
+      "address": "/v1/converse/stream",
+      "description": "One connection = one conversation: history lives in server memory for the socket's lifetime. Frames are JSON text; unknown fields are ignored, an unknown message type gets a non-fatal `error`. The first frame must be `initializeConnection`, within 10 s of connecting. Application close codes: 4400 protocol violation, 4401 authentication failed, 4408 timeout (init deadline or 300 s idle), 4429 reserved for rate limiting, 4503 key verification temporarily unavailable (retry with the same key; not an auth failure).",
+      "externalDocs": {
+        "description": "Streaming conversations — buffering, voice pinning, cancellation, billing.",
+        "url": "https://docs.kalpalabs.ai/streaming"
+      },
+      "messages": {
+        "addTurn": {
+          "$ref": "#/components/messages/addTurn"
+        },
+        "cancelResponse": {
+          "$ref": "#/components/messages/cancelResponse"
+        },
+        "error": {
+          "$ref": "#/components/messages/error"
+        },
+        "initializeConnection": {
+          "$ref": "#/components/messages/initializeConnection"
+        },
+        "responseAudio": {
+          "$ref": "#/components/messages/responseAudio"
+        },
+        "responseCreated": {
+          "$ref": "#/components/messages/responseCreated"
+        },
+        "responseDone": {
+          "$ref": "#/components/messages/responseDone"
+        },
+        "sendText": {
+          "$ref": "#/components/messages/sendText"
+        },
+        "sessionCreated": {
+          "$ref": "#/components/messages/sessionCreated"
+        }
+      },
+      "title": "Conversation stream"
+    }
+  },
+  "components": {
+    "messages": {
+      "addTurn": {
+        "name": "addTurn",
+        "payload": {
+          "properties": {
+            "audio_wav_b64": {
+              "description": "Base64 16-bit PCM WAV, ≤ 25 MiB decoded. Any sample rate; multi-channel is mixed down to mono.",
+              "minLength": 1,
+              "title": "Audio Wav B64",
+              "type": "string"
+            },
+            "speaker_id": {
+              "minimum": 0,
+              "title": "Speaker Id",
+              "type": "integer"
+            },
+            "text": {
+              "description": "The transcript of the audio. The deployment-specific character cap is exposed by GET /v1/info.",
+              "minLength": 1,
+              "title": "Text",
+              "type": "string"
+            },
+            "type": {
+              "const": "addTurn",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "speaker_id",
+            "text",
+            "audio_wav_b64"
+          ],
+          "title": "AddTurn",
+          "type": "object"
+        },
+        "summary": "Adds a completed turn (transcript and audio) to the history without generating anything.\nReference audio added for a speaker pins how that speaker sounds in every later generation.",
+        "title": "addTurn"
+      },
+      "cancelResponse": {
+        "name": "cancelResponse",
+        "payload": {
+          "properties": {
+            "response_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Only cancel this response; omit to cancel whatever is in flight.",
+              "title": "Response Id"
+            },
+            "type": {
+              "const": "cancelResponse",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "title": "CancelResponse",
+          "type": "object"
+        },
+        "summary": "Aborts the in-flight response. Idempotent — cancelling when nothing is generating (or naming\nan already-finished response) is silently ignored.",
+        "title": "cancelResponse"
+      },
+      "error": {
+        "name": "error",
+        "payload": {
+          "properties": {
+            "error": {
+              "$ref": "#/components/schemas/ErrorBody"
+            },
+            "fatal": {
+              "description": "True when the connection is about to close.",
+              "title": "Fatal",
+              "type": "boolean"
+            },
+            "response_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Present when the error belongs to a specific generation.",
+              "title": "Response Id"
+            },
+            "type": {
+              "const": "error",
+              "default": "error",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "fatal",
+            "error"
+          ],
+          "title": "WsError",
+          "type": "object"
+        },
+        "summary": "Any error, fatal or not. Non-fatal errors reject exactly one client message and change no\nstate; fatal errors are followed by a close.",
+        "title": "error"
+      },
+      "initializeConnection": {
+        "name": "initializeConnection",
+        "payload": {
+          "properties": {
+            "api_key": {
+              "description": "Your API key — auth rides this first message because the browser WebSocket API cannot set headers.",
+              "title": "Api Key",
+              "type": "string"
+            },
+            "model": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Public model id (see GET /v1/models). Omit/null for the default model.",
+              "title": "Model"
+            },
+            "type": {
+              "const": "initializeConnection",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "api_key"
+          ],
+          "title": "InitializeConnection",
+          "type": "object"
+        },
+        "summary": "Authenticates the session; must be the first frame, within 10 s of connecting. An invalid or\nmissing `api_key` gets a fatal `error` and close code 4401; if key verification is temporarily\nunavailable the close code is 4503 — retry with the same key.",
+        "title": "initializeConnection"
+      },
+      "responseAudio": {
+        "name": "responseAudio",
+        "payload": {
+          "properties": {
+            "frame": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Backend frame counter; informational.",
+              "title": "Frame"
+            },
+            "pcm_b64": {
+              "description": "Base64 raw PCM (`pcm_s16le`, mono, the session's sample rate) — headerless, unlike `addTurn` input.",
+              "title": "Pcm B64",
+              "type": "string"
+            },
+            "response_id": {
+              "title": "Response Id",
+              "type": "string"
+            },
+            "type": {
+              "const": "responseAudio",
+              "default": "responseAudio",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "response_id",
+            "pcm_b64"
+          ],
+          "title": "ResponseAudio",
+          "type": "object"
+        },
+        "summary": "One chunk of generated audio, in generation order.",
+        "title": "responseAudio"
+      },
+      "responseCreated": {
+        "name": "responseCreated",
+        "payload": {
+          "properties": {
+            "audio_quality": {
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "title": "Audio Quality",
+              "type": "string"
+            },
+            "response_id": {
+              "description": "Id of this generation (`resp_…`); echoed on every related frame.",
+              "title": "Response Id",
+              "type": "string"
+            },
+            "sample_rate": {
+              "title": "Sample Rate",
+              "type": "integer"
+            },
+            "speaker_id": {
+              "description": "The speaker whose turn is being generated.",
+              "title": "Speaker Id",
+              "type": "integer"
+            },
+            "type": {
+              "const": "responseCreated",
+              "default": "responseCreated",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "response_id",
+            "speaker_id",
+            "sample_rate",
+            "audio_quality"
+          ],
+          "title": "ResponseCreated",
+          "type": "object"
+        },
+        "summary": "Generation for a flushed turn has started; `responseAudio` chunks follow.",
+        "title": "responseCreated"
+      },
+      "responseDone": {
+        "name": "responseDone",
+        "payload": {
+          "properties": {
+            "response_id": {
+              "title": "Response Id",
+              "type": "string"
+            },
+            "speaker_id": {
+              "title": "Speaker Id",
+              "type": "integer"
+            },
+            "status": {
+              "enum": [
+                "completed",
+                "cancelled"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "text": {
+              "description": "The final generated text on completion; the flushed input text on cancel.",
+              "title": "Text",
+              "type": "string"
+            },
+            "type": {
+              "const": "responseDone",
+              "default": "responseDone",
+              "title": "Type",
+              "type": "string"
+            },
+            "usage": {
+              "$ref": "#/components/schemas/Usage"
+            }
+          },
+          "required": [
+            "response_id",
+            "speaker_id",
+            "status",
+            "text",
+            "usage"
+          ],
+          "title": "ResponseDone",
+          "type": "object"
+        },
+        "summary": "The response settled — `completed` (the turn, with its final text, is now history) or\n`cancelled` (the turn was dropped; partial audio is never context). Every response pairs a\n`responseCreated` with exactly one `responseDone`.",
+        "title": "responseDone"
+      },
+      "sendText": {
+        "name": "sendText",
+        "payload": {
+          "properties": {
+            "flush": {
+              "default": false,
+              "description": "True ends the turn: the buffered text becomes this speaker's next turn and generation begins.",
+              "title": "Flush",
+              "type": "boolean"
+            },
+            "speaker_id": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Required on the message that opens a turn; optional (must match) while the turn's buffer is open. Resets at flush.",
+              "title": "Speaker Id"
+            },
+            "text": {
+              "default": "",
+              "description": "Appended to the buffer verbatim — no separators are inserted; you own spacing and punctuation.",
+              "title": "Text",
+              "type": "string"
+            },
+            "type": {
+              "const": "sendText",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "title": "SendText",
+          "type": "object"
+        },
+        "summary": "Streams text for a turn. Text accumulates in the pending turn buffer (capped at 8,000\ncharacters per turn); `flush: true` ends the turn and starts generation.",
+        "title": "sendText"
+      },
+      "sessionCreated": {
+        "name": "sessionCreated",
+        "payload": {
+          "properties": {
+            "audio_quality": {
+              "description": "Fidelity tier responses are rendered at.",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "title": "Audio Quality",
+              "type": "string"
+            },
+            "channels": {
+              "default": 1,
+              "title": "Channels",
+              "type": "integer"
+            },
+            "model": {
+              "description": "The model actually serving the session.",
+              "title": "Model",
+              "type": "string"
+            },
+            "output_format": {
+              "const": "pcm_s16le",
+              "default": "pcm_s16le",
+              "description": "Raw signed 16-bit little-endian PCM, mono.",
+              "title": "Output Format",
+              "type": "string"
+            },
+            "sample_rate": {
+              "description": "Sample rate of all response audio in Hz.",
+              "title": "Sample Rate",
+              "type": "integer"
+            },
+            "session_id": {
+              "description": "Server-assigned id for this conversation (`sess_…`).",
+              "title": "Session Id",
+              "type": "string"
+            },
+            "type": {
+              "const": "sessionCreated",
+              "default": "sessionCreated",
+              "title": "Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "session_id",
+            "model",
+            "sample_rate",
+            "audio_quality"
+          ],
+          "title": "SessionCreated",
+          "type": "object"
+        },
+        "summary": "Acknowledges `initializeConnection`: the session is ready and audio will arrive in the fixed\noutput format below.",
+        "title": "sessionCreated"
+      }
+    },
+    "schemas": {
+      "ErrorBody": {
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "message"
+        ],
+        "title": "ErrorBody",
+        "type": "object"
+      },
+      "Usage": {
+        "properties": {
+          "input_audio_seconds": {
+            "default": 0,
+            "description": "Seconds of input audio supplied (converse).",
+            "title": "Input Audio Seconds",
+            "type": "number"
+          },
+          "input_chars": {
+            "default": 0,
+            "description": "Characters of input text billed for this request.",
+            "title": "Input Chars",
+            "type": "integer"
+          },
+          "output_audio_seconds": {
+            "default": 0,
+            "description": "Seconds of audio generated.",
+            "title": "Output Audio Seconds",
+            "type": "number"
+          }
+        },
+        "title": "Usage",
+        "type": "object"
+      }
+    }
+  },
+  "defaultContentType": "application/json",
+  "info": {
+    "description": "The stateful conversational WebSocket: build a multi-speaker history, stream text per speaker, receive raw-PCM audio as it is generated. Complements the REST contract in `openapi.json`.",
+    "title": "Kalpa Speech API — conversational WebSocket",
+    "version": "0.1.0"
+  },
+  "operations": {
+    "clientMessages": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/converseStream"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/converseStream/messages/initializeConnection"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/sendText"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/addTurn"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/cancelResponse"
+        }
+      ],
+      "summary": "Messages the client sends."
+    },
+    "serverMessages": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/converseStream"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/converseStream/messages/sessionCreated"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/responseCreated"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/responseAudio"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/responseDone"
+        },
+        {
+          "$ref": "#/channels/converseStream/messages/error"
+        }
+      ],
+      "summary": "Messages the client receives."
+    }
+  },
+  "servers": {
+    "production": {
+      "description": "Auth rides the first message, not handshake headers.",
+      "host": "api.kalpalabs.ai",
+      "protocol": "wss"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/kalpa-labs-openapi-original.json
+docs: https://docs.kalpalabs.ai/rate-limits-and-errors
+format: custom-envelope
+envelope:
+  shape: '{ "error": { "type": "...", "message": "...", "request_id": "..." } }'
+  stable_field: error.type
+  human_field: error.message
+  correlation_field: error.request_id
+  notes: >-
+    Every error (validation, auth, rate limit, model failure, crash) uses one
+    envelope shape. error.type is stable and machine-matchable; error.message is
+    for humans. The request_id is also returned in the X-Request-ID response header.
+    This is NOT RFC 9457 application/problem+json.
+problems:
+- status: 400
+  type: invalid_request
+  title: Invalid request
+  detail: >-
+    Semantically invalid: over a cap, undecodable audio, unknown model, or a
+    conversation that breaks the turn rules.
+- status: 401
+  type: authentication_error
+  title: Authentication error
+  detail: Missing or invalid API key.
+  source_operation: openapi/kalpa-labs-openapi-original.json#converse_v1_converse_post
+- status: 404
+  type: not_found
+  title: Not found
+  detail: No such path (also returned when a requested voice_id does not exist).
+  source_operation: openapi/kalpa-labs-openapi-original.json#tts_voice_v1_tts__voice_id__post
+- status: 405
+  type: method_not_allowed
+  title: Method not allowed
+  detail: Wrong HTTP method for the path.
+- status: 422
+  type: invalid_request
+  title: Unprocessable entity
+  detail: The body does not match the schema (missing field, wrong type, out-of-range value).
+  source_operation: openapi/kalpa-labs-openapi-original.json#tts_v1_tts_post
+- status: 429
+  type: rate_limit_exceeded
+  title: Rate limit exceeded
+  detail: Over your key's limit. Honor the Retry-After header and back off.
+  remediation: Retry with backoff after Retry-After seconds; all generation requests are safe to retry.
+- status: 500
+  type: internal_error
+  title: Internal error
+  detail: Unexpected failure on our side. Report it with the request_id.
+- status: 502
+  type: inference_error
+  title: Inference error
+  detail: The model backend failed or timed out. Retryable.
+  remediation: Retry with backoff.
+- status: 503
+  type: service_unavailable
+  title: Service unavailable
+  detail: Key verification temporarily unavailable. Retry with the same key; do not treat as invalid.

@@ -1,0 +1,37 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/kalpa-labs-openapi-original.json
+notes: >-
+  No official hosted/remote MCP server was found for Kalpa Labs. The tools below
+  are a CANDIDATE surface derived one-per-operation from the published OpenAPI
+  contract — a starting point, not a provider claim.
+server:
+  name: kalpa-labs
+  transport: http
+  url: null
+tools:
+- name: text_to_speech
+  description: Turn text into spoken audio (base64 WAV).
+  source_operation: openapi/kalpa-labs-openapi-original.json#tts_v1_tts_post
+- name: text_to_speech_with_voice
+  description: TTS using a specific stored voice_id.
+  source_operation: openapi/kalpa-labs-openapi-original.json#tts_voice_v1_tts__voice_id__post
+- name: converse
+  description: Complete the open turn of a multi-speaker conversation (authored speech or contextual TTS).
+  source_operation: openapi/kalpa-labs-openapi-original.json#converse_v1_converse_post
+- name: converse_stream
+  description: Streaming conversation completion over the WebSocket protocol.
+  source_operation: openapi/kalpa-labs-openapi-original.json#converse_stream_v1_converse_stream_post
+- name: list_models
+  description: List the public model registry.
+  source_operation: openapi/kalpa-labs-openapi-original.json#models_v1_models_get
+- name: list_voices
+  description: List available voices.
+  source_operation: openapi/kalpa-labs-openapi-original.json#voices_v1_voices_get
+- name: get_info
+  description: Get gateway limits and runtime info.
+  source_operation: openapi/kalpa-labs-openapi-original.json#info_v1_info_get
+- name: get_usage
+  description: Read the running usage totals for the calling key.
+  source_operation: openapi/kalpa-labs-openapi-original.json#usage_v1_usage_get

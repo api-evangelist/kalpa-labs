@@ -1,0 +1,28 @@
+# Kalpa Speech API
+
+> REST API for Kalpa’s multi-speaker conversational speech models: text-to-speech and conversation completion (the model speaks the open turn of a conversation).
+
+Base URL: https://api.kalpalabs.ai. Auth: `Authorization: Bearer <key>` (keys: hello@kalpalabs.ai).
+Every doc page is served as plain markdown at the .md URLs below.
+
+## Docs
+
+- [Kalpa Speech API](https://docs.kalpalabs.ai/index.md): Speech models that speak in context — one API for text-to-speech and multi-speaker conversation.
+- [Quickstart](https://docs.kalpalabs.ai/quickstart.md): From API key to spoken audio in five minutes: one TTS call, then a conversation.
+- [Authentication](https://docs.kalpalabs.ai/authentication.md): Bearer keys, where to keep them, and how to correlate requests when something goes wrong.
+- [Text-to-speech](https://docs.kalpalabs.ai/text-to-speech.md): Turn text into speech with POST /v1/tts, and tune generation with the sampling knobs.
+- [Conversations](https://docs.kalpalabs.ai/conversations.md): POST /v1/converse completes the open turn of a conversation — authored speech, contextual TTS, and spoken history.
+- [Streaming conversations](https://docs.kalpalabs.ai/streaming.md): A stateful WebSocket at /v1/converse/stream: build a multi-speaker history, stream text per speaker, and play audio as it is generated.
+- [Models](https://docs.kalpalabs.ai/models.md): The public model registry, per-request model switching, and what it costs in latency.
+- [Rate limits & errors](https://docs.kalpalabs.ai/rate-limits-and-errors.md): One error envelope for everything, per-key token buckets, and the caps the gateway enforces.
+- [Usage](https://docs.kalpalabs.ai/usage.md): What every response meters, and reading your key’s running totals from GET /v1/usage.
+
+## Reference
+
+- [API reference](https://docs.kalpalabs.ai/reference.md): Every endpoint, field and error — generated from the committed OpenAPI contract.
+- [OpenAPI contract](https://docs.kalpalabs.ai/openapi.json): the machine-readable spec (OpenAPI 3.1.0)
+- [AsyncAPI contract](https://docs.kalpalabs.ai/asyncapi.json): the WebSocket protocol at /v1/converse/stream (AsyncAPI 3.0.0)
+
+## Optional
+
+- [Full documentation](https://docs.kalpalabs.ai/llms-full.txt): every page above concatenated into one document

@@ -1,0 +1,29 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/kalpa-labs-openapi-original.json, asyncapi/kalpa-labs-converse-stream-asyncapi.json
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: openapi field is 3.1.0 in the published contract
+- id: asyncapi-3.0
+  conforms: true
+  evidence: published AsyncAPI 3.0.0 for the /v1/converse/stream WebSocket protocol
+- id: api-key-bearer-auth
+  conforms: true
+  evidence: securitySchemes ApiKeyAuth (http bearer / X-API-Key header)
+- id: oauth2
+  conforms: false
+- id: openid-connect
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'errors use a custom { error: { type, message, request_id } } envelope, not application/problem+json'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset/Deprecation header support documented
+- id: rate-limit-headers
+  conforms: true
+  evidence: X-RateLimit-Limit / -Remaining / -Reset plus Retry-After on 429
+- id: request-id-correlation
+  conforms: true
+  evidence: X-Request-ID response header echoed into error envelopes

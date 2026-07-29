@@ -1,0 +1,18 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Kalpa Speech API
+  version: 1.0.0
+extends: openapi/kalpa-labs-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: kalpa-labs
+    x-apievangelist-category: [speech, text-to-speech, conversational-ai, voice, audio]
+    x-apievangelist-auth: api-key-bearer
+    x-apievangelist-error-envelope: custom
+    x-apievangelist-async: asyncapi/kalpa-labs-converse-stream-asyncapi.json
+- target: $.info
+  update:
+    x-apievangelist-conventions: conventions/kalpa-labs-conventions.yml
+    x-apievangelist-errors: errors/kalpa-labs-problem-types.yml
+    x-apievangelist-rate-limits: rate-limits/kalpa-labs-rate-limits.yml
