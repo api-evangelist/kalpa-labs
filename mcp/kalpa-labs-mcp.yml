@@ -2,10 +2,9 @@ generated: '2026-07-19'
 method: derived
 status: candidate
 source: openapi/kalpa-labs-openapi-original.json
-notes: >-
-  No official hosted/remote MCP server was found for Kalpa Labs. The tools below
-  are a CANDIDATE surface derived one-per-operation from the published OpenAPI
-  contract — a starting point, not a provider claim.
+notes: No official hosted/remote MCP server was found for Kalpa Labs. The tools below are a CANDIDATE
+  surface derived one-per-operation from the published OpenAPI contract — a starting point, not a provider
+  claim.
 server:
   name: kalpa-labs
   transport: http
@@ -35,3 +34,9 @@ tools:
 - name: get_usage
   description: Read the running usage totals for the calling key.
   source_operation: openapi/kalpa-labs-openapi-original.json#usage_v1_usage_get
+deployment:
+  mode: none
+  verified: derived
+  tools: 8
+  checked: '2026-08-12'
+  source: catalog MCP census

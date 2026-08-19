@@ -1,0 +1,1421 @@
+{
+  "item": [
+    {
+      "id": "72def035-488f-4c74-acd1-580c7a88b8a0",
+      "name": "Speech",
+      "description": {
+        "content": "Text-to-speech and conversational generation.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8f9f9ea4-c993-4876-84a4-ee792af4cfaf",
+          "name": "Complete the open (final) turn of a conversation",
+          "request": {
+            "name": "Complete the open (final) turn of a conversation",
+            "description": {
+              "content": "Given a conversation, complete its last ('open') turn. A speaker-only open turn is authored (text + audio); an open turn with text is rendered as that speaker, conditioned on the prior turns (contextual TTS).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "converse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"<string>\",\n      \"speaker\": \"0\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": \"<number>\",\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "46ad02c1-aff3-472d-bfeb-34d7c1cca386",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"model\": \"string\",\n  \"reply\": {\n    \"speaker\": \"string\",\n    \"text\": \"string\",\n    \"audio\": {\n      \"sample_rate\": 24000,\n      \"audio_quality\": \"low\",\n      \"data_b64\": \"string\",\n      \"format\": \"wav\"\n    }\n  },\n  \"usage\": {\n    \"input_audio_seconds\": 0,\n    \"input_chars\": 0,\n    \"output_audio_seconds\": 0\n  },\n  \"meta\": {\n    \"key_0\": 7021\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6484fbb1-1d03-46d1-8f73-54dd69077eee",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3cb5a373-4f4b-43c3-8ebe-32f0282ff6a6",
+              "name": "Request validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d94695ea-1f27-4211-9aec-d204265cf87d",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a00b1697-caef-42d7-bd9e-13ae29ffe642",
+              "name": "The inference backend failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dc7e46f7-0fb7-43bc-8b3e-242c696bc036",
+          "name": "Complete the open turn, streaming audio as it is generated",
+          "request": {
+            "name": "Complete the open turn, streaming audio as it is generated",
+            "description": {
+              "content": "Same request as /v1/converse; the response is a text/event-stream: one `meta` event, `audio` chunk events as audio is generated (`pcm_b64` = base64 raw 16-bit LE PCM at `sample_rate`), then exactly one `end` (reply text, audio_seconds, usage, meta) or `error`. First audio arrives after one ~80 ms frame instead of after the whole clip; closing the connection aborts generation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "converse",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"<string>\",\n      \"speaker\": \"0\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": \"<number>\",\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3a74ab69-1bd8-4578-ab4b-6b72aaae20ff",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0da7d987-7e48-4930-9734-530af20a4182",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ddb8eea5-7e43-413a-a9bc-472ce1537dd8",
+              "name": "Request validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "769d8f11-65c0-402c-93c7-75987263b58e",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c5a4d26-e150-45b6-b94c-76f007de4284",
+              "name": "The inference backend failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "converse",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation\": [\n    {\n      \"audio_wav_b64\": \"string\",\n      \"speaker\": \"0\",\n      \"text\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.528079447235206,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 2071\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4134d6fb-2364-4c67-a770-0373d4afca17",
+          "name": "Synthesize speech from text",
+          "request": {
+            "name": "Synthesize speech from text",
+            "description": {
+              "content": "Render the given text as speech (24 kHz mono WAV) in the requested speaker's voice.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": \"<number>\",\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": \"<integer>\"\n  },\n  \"speaker\": \"0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3cc46cf0-5725-4f5d-8179-8843559f0105",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 1.3138162305728178,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 7386\n  },\n  \"speaker\": \"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"model\": \"string\",\n  \"text\": \"string\",\n  \"audio\": {\n    \"sample_rate\": 24000,\n    \"audio_quality\": \"low\",\n    \"data_b64\": \"string\",\n    \"format\": \"wav\"\n  },\n  \"usage\": {\n    \"input_audio_seconds\": 0,\n    \"input_chars\": 0,\n    \"output_audio_seconds\": 0\n  },\n  \"meta\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1712.1740490078496\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1681e113-fc39-4e73-9c36-eab7655ca0f0",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 1.3138162305728178,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 7386\n  },\n  \"speaker\": \"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4778393-ace8-4a0c-8b06-0a59048a4b46",
+              "name": "Request validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 1.3138162305728178,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 7386\n  },\n  \"speaker\": \"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e25fed97-d415-4693-beca-bc8a10eb3ef0",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 1.3138162305728178,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 7386\n  },\n  \"speaker\": \"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea907569-fa23-4795-837e-3f649db49077",
+              "name": "The inference backend failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 1.3138162305728178,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 3,\n    \"temperature\": 0.7,\n    \"top_k\": 7386\n  },\n  \"speaker\": \"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46969065-0d9f-4405-a89c-2e7e93b938d6",
+          "name": "Synthesize speech from text in a named voice",
+          "request": {
+            "name": "Synthesize speech from text in a named voice",
+            "description": {
+              "content": "Render the given text as speech (24 kHz mono WAV) in one of the named voices from GET /v1/voices. Default `params` match Kalpa's published evaluation settings.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tts",
+                ":voice_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "voice_id",
+                  "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": \"<number>\",\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dcb81165-6aca-45bf-a321-95806a1cff19",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"model\": \"string\",\n  \"text\": \"string\",\n  \"audio\": {\n    \"sample_rate\": 24000,\n    \"audio_quality\": \"low\",\n    \"data_b64\": \"string\",\n    \"format\": \"wav\"\n  },\n  \"usage\": {\n    \"input_audio_seconds\": 0,\n    \"input_chars\": 0,\n    \"output_audio_seconds\": 0\n  },\n  \"meta\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1712.1740490078496\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d0c2bff-80dd-4567-b7cc-232fc568bbfc",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0420f1bc-0657-47c4-9cb0-bd6db58a31bf",
+              "name": "Unknown voice id.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7187d35f-be65-4e8a-8451-0b7b2349a5f2",
+              "name": "Request validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30de9555-de84-423f-bc8c-abeb5194ba04",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b742a2d6-7a2d-421e-961b-f3de5a3a9a52",
+              "name": "The inference backend failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    ":voice_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "voice_id",
+                      "description": "(Required) A named voice id, as listed by GET /v1/voices."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey there! How are you doing today?\",\n  \"model\": \"<string>\",\n  \"params\": {\n    \"acoustic_temperature\": 0.9871997725412324,\n    \"audio_quality\": \"high\",\n    \"max_new_tokens\": 512,\n    \"penalty_window\": 20,\n    \"repetition_penalty\": 0,\n    \"temperature\": 0.9,\n    \"top_k\": 7618\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.kalpalabs.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "484a3c42-f5f6-4c29-baba-65ca37a805cc",
+    "name": "Kalpa Meta Speech API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker\nconversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.\n\n**Authentication.** Every `/v1` request needs an API key, sent either as\n`Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.\n\n**Rate limits.** Requests are metered per key. When you exceed your limit you receive\n`429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.\n\n**Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).\n\nThis document is the single source of truth for the contract — the docs reference, the studio's\ntyped client, and the SDKs are all generated from it.\n\n\nContact Support:\n Name: Kalpa Labs",
+      "type": "text/plain"
+    }
+  }
+}

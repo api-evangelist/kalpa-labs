@@ -1,0 +1,164 @@
+{
+  "item": [
+    {
+      "id": "d9a7c3f2-8af2-43bc-a4ac-1c22b6485860",
+      "name": "Usage",
+      "description": {
+        "content": "Per-key usage and metering.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a5d40263-7452-432b-8032-5a73e339943d",
+          "name": "Your metered usage",
+          "request": {
+            "name": "Your metered usage",
+            "description": {
+              "content": "Running totals (requests, input characters, audio seconds) for the calling API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "879e8497-0e6e-42a3-a2e2-078b1dd5fd74",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_id\": \"string\",\n  \"requests\": 5393,\n  \"input_chars\": 5987,\n  \"input_audio_seconds\": 9036.791352460414,\n  \"output_audio_seconds\": 278.5752346232595,\n  \"last_request_ts\": 6409.504167718083\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10e22d95-6f8d-400e-9c6c-85125c5e82ff",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\",\n    \"request_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.kalpalabs.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8d4a9240-f338-479b-9251-72a9b310d391",
+    "name": "Kalpa Speech Meta Usage API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker\nconversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.\n\n**Authentication.** Every `/v1` request needs an API key, sent either as\n`Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.\n\n**Rate limits.** Requests are metered per key. When you exceed your limit you receive\n`429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.\n\n**Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).\n\nThis document is the single source of truth for the contract — the docs reference, the studio's\ntyped client, and the SDKs are all generated from it.\n\n\nContact Support:\n Name: Kalpa Labs",
+      "type": "text/plain"
+    }
+  }
+}

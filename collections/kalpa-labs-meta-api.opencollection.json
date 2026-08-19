@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalpa Speech Meta API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Meta",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Liveness probe",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.kalpalabs.ai/health"
+          },
+          "docs": "Liveness probe"
+        },
+        {
+          "info": {
+            "name": "Backend info, default params, and limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.kalpalabs.ai/v1/info",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Backend info, default params, and limits"
+        },
+        {
+          "info": {
+            "name": "List available public models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.kalpalabs.ai/v1/models",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List available public models"
+        },
+        {
+          "info": {
+            "name": "List available named voices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.kalpalabs.ai/v1/voices",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List available named voices"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

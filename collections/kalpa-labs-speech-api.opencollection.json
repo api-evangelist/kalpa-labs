@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalpa Meta Speech API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Speech",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Complete the open (final) turn of a conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.kalpalabs.ai/v1/converse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Given a conversation, complete its last ('open') turn. A speaker-only open turn is authored (text + audio); an open turn with text is rendered as that speaker, conditioned on the prior turns (contextual TTS)."
+        },
+        {
+          "info": {
+            "name": "Complete the open turn, streaming audio as it is generated",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.kalpalabs.ai/v1/converse/stream",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Same request as /v1/converse; the response is a text/event-stream: one `meta` event, `audio` chunk events as audio is generated (`pcm_b64` = base64 raw 16-bit LE PCM at `sample_rate`), then exactly one `end` (reply text, audio_seconds, usage, meta) or `error`. First audio arrives after one ~80 ms frame instead of after the whole clip; closing the connection aborts generation."
+        },
+        {
+          "info": {
+            "name": "Synthesize speech from text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.kalpalabs.ai/v1/tts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Render the given text as speech (24 kHz mono WAV) in the requested speaker's voice."
+        },
+        {
+          "info": {
+            "name": "Synthesize speech from text in a named voice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.kalpalabs.ai/v1/tts/:voice_id",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path",
+                "description": "A named voice id, as listed by GET /v1/voices."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Render the given text as speech (24 kHz mono WAV) in one of the named voices from GET /v1/voices. Default `params` match Kalpa's published evaluation settings."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

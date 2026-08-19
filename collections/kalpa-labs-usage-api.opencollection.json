@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalpa Speech Meta Usage API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Your metered usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.kalpalabs.ai/v1/usage",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Running totals (requests, input characters, audio seconds) for the calling API key."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

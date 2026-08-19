@@ -1,0 +1,354 @@
+{
+  "item": [
+    {
+      "id": "c47f98d7-4ded-423f-8555-83638e752efb",
+      "name": "Meta",
+      "description": {
+        "content": "Health checks and capability discovery.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7ba661ff-e0f3-47aa-b90d-417e7e8dbe4e",
+          "name": "Liveness probe",
+          "request": {
+            "name": "Liveness probe",
+            "description": {},
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8495e789-ec94-493b-8c8b-6f6c0f812afb",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"backend\": \"string\",\n  \"ready\": false,\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ecb25e10-517b-403b-aeb5-3e60ab88ab9e",
+          "name": "Backend info, default params, and limits",
+          "request": {
+            "name": "Backend info, default params, and limits",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "info"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f0f6d6c7-f14a-4635-994a-f43a797b27cc",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"backend\": {\n    \"key_0\": false\n  },\n  \"defaults\": {\n    \"key_0\": true,\n    \"key_1\": 9456\n  },\n  \"limits\": {\n    \"key_0\": 4774\n  },\n  \"param_schema\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d776dda9-447f-4096-8abc-cdfd48e83b72",
+          "name": "List available public models",
+          "request": {
+            "name": "List available public models",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "52eb707f-d402-42f1-9dbf-3759e54cf01d",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"display_name\": \"string\",\n      \"modes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"speakers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"default\": false,\n      \"description\": \"\"\n    },\n    {\n      \"id\": \"string\",\n      \"display_name\": \"string\",\n      \"modes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"speakers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"default\": false,\n      \"description\": \"\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6b18e29-4f86-4a08-a9c0-95d17606a0db",
+          "name": "List available named voices",
+          "request": {
+            "name": "List available named voices",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "voices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6dfe8959-222d-41cb-a813-c123eb99122e",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "voices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"gender\": \"feminine\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"gender\": \"masculine\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.kalpalabs.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "38474294-ea22-46e8-8b6e-3b72b2852372",
+    "name": "Kalpa Speech Meta API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker\nconversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.\n\n**Authentication.** Every `/v1` request needs an API key, sent either as\n`Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.\n\n**Rate limits.** Requests are metered per key. When you exceed your limit you receive\n`429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.\n\n**Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).\n\nThis document is the single source of truth for the contract — the docs reference, the studio's\ntyped client, and the SDKs are all generated from it.\n\n\nContact Support:\n Name: Kalpa Labs",
+      "type": "text/plain"
+    }
+  }
+}
