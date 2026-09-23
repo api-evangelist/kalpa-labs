@@ -1,31 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   contact:
     name: Kalpa Labs
     url: https://kalpalabs.ai/
   description: 'The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker
 
-    conversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.
-
-
-    **Authentication.** Every `/v1` request needs an API key, sent either as
-
-    `Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.
-
-
-    **Rate limits.** Requests are metered per key. When you exceed your limit you receive
-
-    `429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.
-
-
-    **Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).
-
-
-    This document is the single source of truth for the contract — the docs reference, the studio''s
-
-    typed client, and the SDKs are all generated from it.
-
-    '
+    conversation as the next speaker (**converse**), returning generated text + 24 kHz audio.'
   license:
     name: Proprietary
   title: Kalpa Speech Meta API
@@ -99,35 +79,6 @@ paths:
       - Meta
 components:
   schemas:
-    ModelsResponse:
-      properties:
-        data:
-          description: The available public models.
-          items:
-            $ref: '#/components/schemas/ModelCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: ModelsResponse
-      type: object
-    HealthResponse:
-      properties:
-        backend:
-          title: Backend
-          type: string
-        ready:
-          title: Ready
-          type: boolean
-        status:
-          default: ok
-          title: Status
-          type: string
-      required:
-      - backend
-      - ready
-      title: HealthResponse
-      type: object
     ModelCard:
       description: One public model variant, as listed by ``GET /v1/models``.
       properties:
@@ -168,17 +119,17 @@ components:
       - speakers
       title: ModelCard
       type: object
-    VoicesResponse:
+    ModelsResponse:
       properties:
         data:
-          description: The available named voices.
+          description: The available public models.
           items:
-            $ref: '#/components/schemas/VoiceCard'
+            $ref: '#/components/schemas/ModelCard'
           title: Data
           type: array
       required:
       - data
-      title: VoicesResponse
+      title: ModelsResponse
       type: object
     VoiceCard:
       description: One named voice, as listed by ``GET /v1/voices``.
@@ -232,6 +183,35 @@ components:
       - limits
       - param_schema
       title: InfoResponse
+      type: object
+    VoicesResponse:
+      properties:
+        data:
+          description: The available named voices.
+          items:
+            $ref: '#/components/schemas/VoiceCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: VoicesResponse
+      type: object
+    HealthResponse:
+      properties:
+        backend:
+          title: Backend
+          type: string
+        ready:
+          title: Ready
+          type: boolean
+        status:
+          default: ok
+          title: Status
+          type: string
+      required:
+      - backend
+      - ready
+      title: HealthResponse
       type: object
   securitySchemes:
     ApiKeyAuth:

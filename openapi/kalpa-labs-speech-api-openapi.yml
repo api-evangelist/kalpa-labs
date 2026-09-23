@@ -1,34 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   contact:
     name: Kalpa Labs
     url: https://kalpalabs.ai/
   description: 'The Kalpa Speech API turns text into natural speech (**TTS**) and continues a multi-speaker
 
-    conversation as the next speaker (**converse**), returning generated text + 24&nbsp;kHz audio.
-
-
-    **Authentication.** Every `/v1` request needs an API key, sent either as
-
-    `Authorization: Bearer <key>` (preferred) or an `X-API-Key: <key>` header.
-
-
-    **Rate limits.** Requests are metered per key. When you exceed your limit you receive
-
-    `429 Too Many Requests` with a `Retry-After` header; every response carries `X-RateLimit-*` headers.
-
-
-    **Audio.** Audio crosses the wire as base64-encoded 16-bit PCM WAV (mono, 24&nbsp;kHz).
-
-
-    This document is the single source of truth for the contract — the docs reference, the studio''s
-
-    typed client, and the SDKs are all generated from it.
-
-    '
+    conversation as the next speaker (**converse**), returning generated text + 24 kHz audio.'
   license:
     name: Proprietary
-  title: Kalpa Meta Speech API
+  title: Kalpa Speech API
   version: 0.1.0
 servers:
 - description: Production
@@ -239,106 +219,83 @@ paths:
       - Speech
 components:
   schemas:
-    Usage:
-      properties:
-        input_audio_seconds:
-          default: 0
-          description: Seconds of input audio supplied (converse).
-          title: Input Audio Seconds
-          type: number
-        input_chars:
-          default: 0
-          description: Characters of input text billed for this request.
-          title: Input Chars
-          type: integer
-        output_audio_seconds:
-          default: 0
-          description: Seconds of audio generated.
-          title: Output Audio Seconds
-          type: number
-      title: Usage
-      type: object
-    GenParamsModel:
-      description: 'Generation knobs, all optional — the defaults are the tuned starting point (served with UI
+    VoiceTtsRequest:
+      description: '``TtsRequest`` minus ``speaker`` (the voice determines it) with eval-default sampling.
 
-        ranges at GET /v1/info).'
+        The response is a plain ``TtsResponse`` — the voice is whatever the caller put in the path.'
       properties:
-        acoustic_temperature:
-          anyOf:
-          - maximum: 1.5
-            minimum: 0
-            type: number
-          - type: 'null'
-          description: Temperature for the voice's fine acoustic detail; null = follow `temperature`.
-          title: Acoustic Temperature
-        audio_quality:
-          default: high
-          description: 'Playback fidelity: high = full quality (default), lower tiers = smaller, lower-fidelity audio.'
-          enum:
-          - low
-          - medium
-          - high
-          title: Audio Quality
-          type: string
-        max_new_tokens:
-          default: 512
-          maximum: 2048
-          minimum: 16
-          title: Max New Tokens
-          type: integer
-        penalty_window:
-          default: 20
-          maximum: 80
-          minimum: 1
-          title: Penalty Window
-          type: integer
-        repetition_penalty:
-          default: 3
-          maximum: 6
-          minimum: 0
-          title: Repetition Penalty
-          type: number
-        temperature:
-          default: 0.7
-          maximum: 1.5
-          minimum: 0
-          title: Temperature
-          type: number
-        top_k:
-          anyOf:
-          - minimum: 1
-            type: integer
-          - type: 'null'
-          description: Sample from the k most-likely tokens; null = full vocabulary.
-          title: Top K
-      title: GenParamsModel
-      type: object
-    ErrorBody:
-      properties:
-        message:
-          title: Message
-          type: string
-        request_id:
+        model:
           anyOf:
           - type: string
           - type: 'null'
-          title: Request Id
-        type:
-          title: Type
+          description: Public model id (see GET /v1/models). Omit/null for the default model.
+          examples:
+          - kalpa-beta-v0.3
+          title: Model
+        params:
+          $ref: '#/components/schemas/VoiceGenParamsModel'
+        text:
+          description: Text to speak.
+          examples:
+          - Hey there! How are you doing today?
+          maxLength: 8000
+          minLength: 1
+          title: Text
           type: string
       required:
-      - type
-      - message
-      title: ErrorBody
+      - text
+      title: VoiceTtsRequest
       type: object
-    ErrorResponse:
-      description: The envelope returned for every 4xx/5xx.
+    ConverseReply:
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorBody'
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/AudioPayload'
+          - type: 'null'
+        speaker:
+          title: Speaker
+          type: string
+        text:
+          title: Text
+          type: string
       required:
-      - error
-      title: ErrorResponse
+      - speaker
+      - text
+      title: ConverseReply
+      type: object
+    ConverseRequest:
+      description: 'Complete the open (final) turn of a conversation.
+
+
+        Every turn except the last must carry ``text`` and/or ``audio_wav_b64`` (grounded history). The
+
+        **last** turn is the one to generate: it may be ``speaker``-only (model authors text + audio) or
+
+        ``speaker`` + ``text`` (render that text as contextual TTS). A last turn already carrying both text
+
+        and audio has nothing to generate → ``400``.'
+      properties:
+        conversation:
+          description: The conversation, oldest turn first; the last turn is the open turn to complete.
+          items:
+            $ref: '#/components/schemas/ConversationTurnModel'
+          maxItems: 64
+          minItems: 1
+          title: Conversation
+          type: array
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Public model id (see GET /v1/models). Omit/null for the default model.
+          examples:
+          - kalpa-beta-v0.3
+          title: Model
+        params:
+          $ref: '#/components/schemas/GenParamsModel'
+      required:
+      - conversation
+      title: ConverseRequest
       type: object
     VoiceGenParamsModel:
       description: '`GenParamsModel` with the defaults `/v1/tts/{voice_id}` generates under when the caller sends
@@ -398,26 +355,8 @@ components:
           title: Top K
       title: VoiceGenParamsModel
       type: object
-    ConverseRequest:
-      description: 'Complete the open (final) turn of a conversation.
-
-
-        Every turn except the last must carry ``text`` and/or ``audio_wav_b64`` (grounded history). The
-
-        **last** turn is the one to generate: it may be ``speaker``-only (model authors text + audio) or
-
-        ``speaker`` + ``text`` (render that text as contextual TTS). A last turn already carrying both text
-
-        and audio has nothing to generate → ``400``.'
+    TtsRequest:
       properties:
-        conversation:
-          description: The conversation, oldest turn first; the last turn is the open turn to complete.
-          items:
-            $ref: '#/components/schemas/ConversationTurnModel'
-          maxItems: 64
-          minItems: 1
-          title: Conversation
-          type: array
         model:
           anyOf:
           - type: string
@@ -428,25 +367,11 @@ components:
           title: Model
         params:
           $ref: '#/components/schemas/GenParamsModel'
-      required:
-      - conversation
-      title: ConverseRequest
-      type: object
-    VoiceTtsRequest:
-      description: '``TtsRequest`` minus ``speaker`` (the voice determines it) with eval-default sampling.
-
-        The response is a plain ``TtsResponse`` — the voice is whatever the caller put in the path.'
-      properties:
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: Public model id (see GET /v1/models). Omit/null for the default model.
-          examples:
-          - kalpa-beta-v0.3
-          title: Model
-        params:
-          $ref: '#/components/schemas/VoiceGenParamsModel'
+        speaker:
+          default: '0'
+          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
+          title: Speaker
+          type: string
         text:
           description: Text to speak.
           examples:
@@ -457,52 +382,7 @@ components:
           type: string
       required:
       - text
-      title: VoiceTtsRequest
-      type: object
-    ConversationTurnModel:
-      properties:
-        audio_wav_b64:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: Base64 16-bit PCM WAV of this turn's audio, if any.
-          title: Audio Wav B64
-        speaker:
-          default: '0'
-          description: Role label for this turn (one of the model's `speakers`).
-          title: Speaker
-          type: string
-        text:
-          anyOf:
-          - maxLength: 8000
-            type: string
-          - type: 'null'
-          description: Text spoken in this turn, if known.
-          title: Text
-      title: ConversationTurnModel
-      type: object
-    ConverseResponse:
-      properties:
-        meta:
-          additionalProperties: true
-          title: Meta
-          type: object
-        model:
-          title: Model
-          type: string
-        reply:
-          $ref: '#/components/schemas/ConverseReply'
-        request_id:
-          title: Request Id
-          type: string
-        usage:
-          $ref: '#/components/schemas/Usage'
-      required:
-      - request_id
-      - model
-      - reply
-      - usage
-      title: ConverseResponse
+      title: TtsRequest
       type: object
     TtsResponse:
       properties:
@@ -533,22 +413,96 @@ components:
       - usage
       title: TtsResponse
       type: object
-    ConverseReply:
+    ErrorResponse:
+      description: The envelope returned for every 4xx/5xx.
       properties:
-        audio:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+      - error
+      title: ErrorResponse
+      type: object
+    ErrorBody:
+      properties:
+        message:
+          title: Message
+          type: string
+        request_id:
           anyOf:
-          - $ref: '#/components/schemas/AudioPayload'
+          - type: string
           - type: 'null'
+          title: Request Id
+        type:
+          title: Type
+          type: string
+      required:
+      - type
+      - message
+      title: ErrorBody
+      type: object
+    ConverseResponse:
+      properties:
+        meta:
+          additionalProperties: true
+          title: Meta
+          type: object
+        model:
+          title: Model
+          type: string
+        reply:
+          $ref: '#/components/schemas/ConverseReply'
+        request_id:
+          title: Request Id
+          type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      required:
+      - request_id
+      - model
+      - reply
+      - usage
+      title: ConverseResponse
+      type: object
+    ConversationTurnModel:
+      properties:
+        audio_wav_b64:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Base64 16-bit PCM WAV of this turn's audio, if any.
+          title: Audio Wav B64
         speaker:
+          default: '0'
+          description: Role label for this turn (one of the model's `speakers`).
           title: Speaker
           type: string
         text:
+          anyOf:
+          - maxLength: 8000
+            type: string
+          - type: 'null'
+          description: Text spoken in this turn, if known.
           title: Text
-          type: string
-      required:
-      - speaker
-      - text
-      title: ConverseReply
+      title: ConversationTurnModel
+      type: object
+    Usage:
+      properties:
+        input_audio_seconds:
+          default: 0
+          description: Seconds of input audio supplied (converse).
+          title: Input Audio Seconds
+          type: number
+        input_chars:
+          default: 0
+          description: Characters of input text billed for this request.
+          title: Input Chars
+          type: integer
+        output_audio_seconds:
+          default: 0
+          description: Seconds of audio generated.
+          title: Output Audio Seconds
+          type: number
+      title: Usage
       type: object
     AudioPayload:
       properties:
@@ -581,34 +535,60 @@ components:
       - data_b64
       title: AudioPayload
       type: object
-    TtsRequest:
+    GenParamsModel:
+      description: 'Generation knobs, all optional — the defaults are the tuned starting point (served with UI
+
+        ranges at GET /v1/info).'
       properties:
-        model:
+        acoustic_temperature:
           anyOf:
-          - type: string
+          - maximum: 1.5
+            minimum: 0
+            type: number
           - type: 'null'
-          description: Public model id (see GET /v1/models). Omit/null for the default model.
-          examples:
-          - kalpa-beta-v0.3
-          title: Model
-        params:
-          $ref: '#/components/schemas/GenParamsModel'
-        speaker:
-          default: '0'
-          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
-          title: Speaker
+          description: Temperature for the voice's fine acoustic detail; null = follow `temperature`.
+          title: Acoustic Temperature
+        audio_quality:
+          default: high
+          description: 'Playback fidelity: high = full quality (default), lower tiers = smaller, lower-fidelity audio.'
+          enum:
+          - low
+          - medium
+          - high
+          title: Audio Quality
           type: string
-        text:
-          description: Text to speak.
-          examples:
-          - Hey there! How are you doing today?
-          maxLength: 8000
-          minLength: 1
-          title: Text
-          type: string
-      required:
-      - text
-      title: TtsRequest
+        max_new_tokens:
+          default: 512
+          maximum: 2048
+          minimum: 16
+          title: Max New Tokens
+          type: integer
+        penalty_window:
+          default: 20
+          maximum: 80
+          minimum: 1
+          title: Penalty Window
+          type: integer
+        repetition_penalty:
+          default: 3
+          maximum: 6
+          minimum: 0
+          title: Repetition Penalty
+          type: number
+        temperature:
+          default: 0.7
+          maximum: 1.5
+          minimum: 0
+          title: Temperature
+          type: number
+        top_k:
+          anyOf:
+          - minimum: 1
+            type: integer
+          - type: 'null'
+          description: Sample from the k most-likely tokens; null = full vocabulary.
+          title: Top K
+      title: GenParamsModel
       type: object
   securitySchemes:
     ApiKeyAuth:
