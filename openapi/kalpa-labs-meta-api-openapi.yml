@@ -79,46 +79,6 @@ paths:
       - Meta
 components:
   schemas:
-    ModelCard:
-      description: One public model variant, as listed by ``GET /v1/models``.
-      properties:
-        default:
-          default: false
-          description: True for the model used when `model` is omitted.
-          title: Default
-          type: boolean
-        description:
-          default: ''
-          description: What this model is for.
-          title: Description
-          type: string
-        display_name:
-          description: Human-readable model name.
-          title: Display Name
-          type: string
-        id:
-          description: Stable public model id used in the `model` request field.
-          title: Id
-          type: string
-        modes:
-          description: 'Supported modes: subset of ["converse", "tts"].'
-          items:
-            type: string
-          title: Modes
-          type: array
-        speakers:
-          description: Valid role labels for a turn's `speaker`, in turn order (e.g. ["0", "1"]).
-          items:
-            type: string
-          title: Speakers
-          type: array
-      required:
-      - id
-      - display_name
-      - modes
-      - speakers
-      title: ModelCard
-      type: object
     ModelsResponse:
       properties:
         data:
@@ -184,18 +144,6 @@ components:
       - param_schema
       title: InfoResponse
       type: object
-    VoicesResponse:
-      properties:
-        data:
-          description: The available named voices.
-          items:
-            $ref: '#/components/schemas/VoiceCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: VoicesResponse
-      type: object
     HealthResponse:
       properties:
         backend:
@@ -212,6 +160,58 @@ components:
       - backend
       - ready
       title: HealthResponse
+      type: object
+    ModelCard:
+      description: One public model variant, as listed by ``GET /v1/models``.
+      properties:
+        default:
+          default: false
+          description: True for the model used when `model` is omitted.
+          title: Default
+          type: boolean
+        description:
+          default: ''
+          description: What this model is for.
+          title: Description
+          type: string
+        display_name:
+          description: Human-readable model name.
+          title: Display Name
+          type: string
+        id:
+          description: Stable public model id used in the `model` request field.
+          title: Id
+          type: string
+        modes:
+          description: 'Supported modes: subset of ["converse", "tts"].'
+          items:
+            type: string
+          title: Modes
+          type: array
+        speakers:
+          description: Valid role labels for a turn's `speaker`, in turn order (e.g. ["0", "1"]).
+          items:
+            type: string
+          title: Speakers
+          type: array
+      required:
+      - id
+      - display_name
+      - modes
+      - speakers
+      title: ModelCard
+      type: object
+    VoicesResponse:
+      properties:
+        data:
+          description: The available named voices.
+          items:
+            $ref: '#/components/schemas/VoiceCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: VoicesResponse
       type: object
   securitySchemes:
     ApiKeyAuth:

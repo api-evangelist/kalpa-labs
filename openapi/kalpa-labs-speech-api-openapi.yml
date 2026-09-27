@@ -219,6 +219,53 @@ paths:
       - Speech
 components:
   schemas:
+    ErrorBody:
+      properties:
+        message:
+          title: Message
+          type: string
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+        type:
+          title: Type
+          type: string
+      required:
+      - type
+      - message
+      title: ErrorBody
+      type: object
+    TtsResponse:
+      properties:
+        audio:
+          $ref: '#/components/schemas/AudioPayload'
+        meta:
+          additionalProperties: true
+          description: Backend-specific diagnostics (latency, frames, …).
+          title: Meta
+          type: object
+        model:
+          title: Model
+          type: string
+        request_id:
+          title: Request Id
+          type: string
+        text:
+          description: The text that was spoken (echoes the request).
+          title: Text
+          type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      required:
+      - request_id
+      - model
+      - text
+      - audio
+      - usage
+      title: TtsResponse
+      type: object
     VoiceTtsRequest:
       description: '``TtsRequest`` minus ``speaker`` (the voice determines it) with eval-default sampling.
 
@@ -245,23 +292,6 @@ components:
       required:
       - text
       title: VoiceTtsRequest
-      type: object
-    ConverseReply:
-      properties:
-        audio:
-          anyOf:
-          - $ref: '#/components/schemas/AudioPayload'
-          - type: 'null'
-        speaker:
-          title: Speaker
-          type: string
-        text:
-          title: Text
-          type: string
-      required:
-      - speaker
-      - text
-      title: ConverseReply
       type: object
     ConverseRequest:
       description: 'Complete the open (final) turn of a conversation.
@@ -296,6 +326,64 @@ components:
       required:
       - conversation
       title: ConverseRequest
+      type: object
+    ConverseReply:
+      properties:
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/AudioPayload'
+          - type: 'null'
+        speaker:
+          title: Speaker
+          type: string
+        text:
+          title: Text
+          type: string
+      required:
+      - speaker
+      - text
+      title: ConverseReply
+      type: object
+    Usage:
+      properties:
+        input_audio_seconds:
+          default: 0
+          description: Seconds of input audio supplied (converse).
+          title: Input Audio Seconds
+          type: number
+        input_chars:
+          default: 0
+          description: Characters of input text billed for this request.
+          title: Input Chars
+          type: integer
+        output_audio_seconds:
+          default: 0
+          description: Seconds of audio generated.
+          title: Output Audio Seconds
+          type: number
+      title: Usage
+      type: object
+    ConversationTurnModel:
+      properties:
+        audio_wav_b64:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Base64 16-bit PCM WAV of this turn's audio, if any.
+          title: Audio Wav B64
+        speaker:
+          default: '0'
+          description: Role label for this turn (one of the model's `speakers`).
+          title: Speaker
+          type: string
+        text:
+          anyOf:
+          - maxLength: 8000
+            type: string
+          - type: 'null'
+          description: Text spoken in this turn, if known.
+          title: Text
+      title: ConversationTurnModel
       type: object
     VoiceGenParamsModel:
       description: '`GenParamsModel` with the defaults `/v1/tts/{voice_id}` generates under when the caller sends
@@ -355,91 +443,6 @@ components:
           title: Top K
       title: VoiceGenParamsModel
       type: object
-    TtsRequest:
-      properties:
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: Public model id (see GET /v1/models). Omit/null for the default model.
-          examples:
-          - kalpa-beta-v0.3
-          title: Model
-        params:
-          $ref: '#/components/schemas/GenParamsModel'
-        speaker:
-          default: '0'
-          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
-          title: Speaker
-          type: string
-        text:
-          description: Text to speak.
-          examples:
-          - Hey there! How are you doing today?
-          maxLength: 8000
-          minLength: 1
-          title: Text
-          type: string
-      required:
-      - text
-      title: TtsRequest
-      type: object
-    TtsResponse:
-      properties:
-        audio:
-          $ref: '#/components/schemas/AudioPayload'
-        meta:
-          additionalProperties: true
-          description: Backend-specific diagnostics (latency, frames, …).
-          title: Meta
-          type: object
-        model:
-          title: Model
-          type: string
-        request_id:
-          title: Request Id
-          type: string
-        text:
-          description: The text that was spoken (echoes the request).
-          title: Text
-          type: string
-        usage:
-          $ref: '#/components/schemas/Usage'
-      required:
-      - request_id
-      - model
-      - text
-      - audio
-      - usage
-      title: TtsResponse
-      type: object
-    ErrorResponse:
-      description: The envelope returned for every 4xx/5xx.
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorBody'
-      required:
-      - error
-      title: ErrorResponse
-      type: object
-    ErrorBody:
-      properties:
-        message:
-          title: Message
-          type: string
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Request Id
-        type:
-          title: Type
-          type: string
-      required:
-      - type
-      - message
-      title: ErrorBody
-      type: object
     ConverseResponse:
       properties:
         meta:
@@ -462,78 +465,6 @@ components:
       - reply
       - usage
       title: ConverseResponse
-      type: object
-    ConversationTurnModel:
-      properties:
-        audio_wav_b64:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: Base64 16-bit PCM WAV of this turn's audio, if any.
-          title: Audio Wav B64
-        speaker:
-          default: '0'
-          description: Role label for this turn (one of the model's `speakers`).
-          title: Speaker
-          type: string
-        text:
-          anyOf:
-          - maxLength: 8000
-            type: string
-          - type: 'null'
-          description: Text spoken in this turn, if known.
-          title: Text
-      title: ConversationTurnModel
-      type: object
-    Usage:
-      properties:
-        input_audio_seconds:
-          default: 0
-          description: Seconds of input audio supplied (converse).
-          title: Input Audio Seconds
-          type: number
-        input_chars:
-          default: 0
-          description: Characters of input text billed for this request.
-          title: Input Chars
-          type: integer
-        output_audio_seconds:
-          default: 0
-          description: Seconds of audio generated.
-          title: Output Audio Seconds
-          type: number
-      title: Usage
-      type: object
-    AudioPayload:
-      properties:
-        audio_quality:
-          description: Fidelity tier this audio was rendered at (high = full quality).
-          enum:
-          - low
-          - medium
-          - high
-          title: Audio Quality
-          type: string
-        data_b64:
-          description: Base64-encoded 16-bit PCM WAV (mono).
-          title: Data B64
-          type: string
-        format:
-          default: wav
-          description: Container/encoding of `data_b64` (16-bit PCM WAV).
-          title: Format
-          type: string
-        sample_rate:
-          description: Sample rate of the audio in Hz.
-          examples:
-          - 24000
-          title: Sample Rate
-          type: integer
-      required:
-      - sample_rate
-      - audio_quality
-      - data_b64
-      title: AudioPayload
       type: object
     GenParamsModel:
       description: 'Generation knobs, all optional — the defaults are the tuned starting point (served with UI
@@ -589,6 +520,75 @@ components:
           description: Sample from the k most-likely tokens; null = full vocabulary.
           title: Top K
       title: GenParamsModel
+      type: object
+    ErrorResponse:
+      description: The envelope returned for every 4xx/5xx.
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+      - error
+      title: ErrorResponse
+      type: object
+    AudioPayload:
+      properties:
+        audio_quality:
+          description: Fidelity tier this audio was rendered at (high = full quality).
+          enum:
+          - low
+          - medium
+          - high
+          title: Audio Quality
+          type: string
+        data_b64:
+          description: Base64-encoded 16-bit PCM WAV (mono).
+          title: Data B64
+          type: string
+        format:
+          default: wav
+          description: Container/encoding of `data_b64` (16-bit PCM WAV).
+          title: Format
+          type: string
+        sample_rate:
+          description: Sample rate of the audio in Hz.
+          examples:
+          - 24000
+          title: Sample Rate
+          type: integer
+      required:
+      - sample_rate
+      - audio_quality
+      - data_b64
+      title: AudioPayload
+      type: object
+    TtsRequest:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Public model id (see GET /v1/models). Omit/null for the default model.
+          examples:
+          - kalpa-beta-v0.3
+          title: Model
+        params:
+          $ref: '#/components/schemas/GenParamsModel'
+        speaker:
+          default: '0'
+          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
+          title: Speaker
+          type: string
+        text:
+          description: Text to speak.
+          examples:
+          - Hey there! How are you doing today?
+          maxLength: 8000
+          minLength: 1
+          title: Text
+          type: string
+      required:
+      - text
+      title: TtsRequest
       type: object
   securitySchemes:
     ApiKeyAuth:

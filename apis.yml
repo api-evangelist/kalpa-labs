@@ -58,8 +58,9 @@ tags:
 - Voice
 - Audio
 - Conversational AI
-- Machine-Learning
+- Machine Learning
 - Artificial Intelligence
+- Real-Time
 tags_raw:
 - Company
 - Speech
@@ -69,6 +70,8 @@ tags_raw:
 - Conversational AI
 - Machine Learning
 - Artificial Intelligence
+- Machine-Learning
+- Real-Time
 apis:
 - aid: kalpa-labs:kalpa-labs-meta-api
   name: Kalpa Labs Meta API

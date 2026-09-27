@@ -43,15 +43,6 @@ paths:
       - Usage
 components:
   schemas:
-    ErrorResponse:
-      description: The envelope returned for every 4xx/5xx.
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorBody'
-      required:
-      - error
-      title: ErrorResponse
-      type: object
     ErrorBody:
       properties:
         message:
@@ -69,6 +60,15 @@ components:
       - type
       - message
       title: ErrorBody
+      type: object
+    ErrorResponse:
+      description: The envelope returned for every 4xx/5xx.
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+      - error
+      title: ErrorResponse
       type: object
     UsageSummaryResponse:
       properties:
