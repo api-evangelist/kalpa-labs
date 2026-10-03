@@ -79,42 +79,6 @@ paths:
       - Meta
 components:
   schemas:
-    ModelsResponse:
-      properties:
-        data:
-          description: The available public models.
-          items:
-            $ref: '#/components/schemas/ModelCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: ModelsResponse
-      type: object
-    VoiceCard:
-      description: One named voice, as listed by ``GET /v1/voices``.
-      properties:
-        gender:
-          description: Perceived voice gender.
-          enum:
-          - feminine
-          - masculine
-          title: Gender
-          type: string
-        id:
-          description: Stable public voice id, used as the /v1/tts/{voice_id} path segment.
-          title: Id
-          type: string
-        name:
-          description: Human-readable voice name.
-          title: Name
-          type: string
-      required:
-      - id
-      - name
-      - gender
-      title: VoiceCard
-      type: object
     InfoResponse:
       properties:
         backend:
@@ -144,22 +108,29 @@ components:
       - param_schema
       title: InfoResponse
       type: object
-    HealthResponse:
+    VoiceCard:
+      description: One named voice, as listed by ``GET /v1/voices``.
       properties:
-        backend:
-          title: Backend
+        gender:
+          description: Perceived voice gender.
+          enum:
+          - feminine
+          - masculine
+          title: Gender
           type: string
-        ready:
-          title: Ready
-          type: boolean
-        status:
-          default: ok
-          title: Status
+        id:
+          description: Stable public voice id, used as the /v1/tts/{voice_id} path segment.
+          title: Id
+          type: string
+        name:
+          description: Human-readable voice name.
+          title: Name
           type: string
       required:
-      - backend
-      - ready
-      title: HealthResponse
+      - id
+      - name
+      - gender
+      title: VoiceCard
       type: object
     ModelCard:
       description: One public model variant, as listed by ``GET /v1/models``.
@@ -201,6 +172,18 @@ components:
       - speakers
       title: ModelCard
       type: object
+    ModelsResponse:
+      properties:
+        data:
+          description: The available public models.
+          items:
+            $ref: '#/components/schemas/ModelCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: ModelsResponse
+      type: object
     VoicesResponse:
       properties:
         data:
@@ -212,6 +195,23 @@ components:
       required:
       - data
       title: VoicesResponse
+      type: object
+    HealthResponse:
+      properties:
+        backend:
+          title: Backend
+          type: string
+        ready:
+          title: Ready
+          type: boolean
+        status:
+          default: ok
+          title: Status
+          type: string
+      required:
+      - backend
+      - ready
+      title: HealthResponse
       type: object
   securitySchemes:
     ApiKeyAuth:

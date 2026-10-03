@@ -43,24 +43,6 @@ paths:
       - Usage
 components:
   schemas:
-    ErrorBody:
-      properties:
-        message:
-          title: Message
-          type: string
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Request Id
-        type:
-          title: Type
-          type: string
-      required:
-      - type
-      - message
-      title: ErrorBody
-      type: object
     ErrorResponse:
       description: The envelope returned for every 4xx/5xx.
       properties:
@@ -99,6 +81,24 @@ components:
       - input_audio_seconds
       - output_audio_seconds
       title: UsageSummaryResponse
+      type: object
+    ErrorBody:
+      properties:
+        message:
+          title: Message
+          type: string
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+        type:
+          title: Type
+          type: string
+      required:
+      - type
+      - message
+      title: ErrorBody
       type: object
   securitySchemes:
     ApiKeyAuth:

@@ -219,6 +219,90 @@ paths:
       - Speech
 components:
   schemas:
+    TtsRequest:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Public model id (see GET /v1/models). Omit/null for the default model.
+          examples:
+          - kalpa-beta-v0.3
+          title: Model
+        params:
+          $ref: '#/components/schemas/GenParamsModel'
+        speaker:
+          default: '0'
+          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
+          title: Speaker
+          type: string
+        text:
+          description: Text to speak.
+          examples:
+          - Hey there! How are you doing today?
+          maxLength: 8000
+          minLength: 1
+          title: Text
+          type: string
+      required:
+      - text
+      title: TtsRequest
+      type: object
+    GenParamsModel:
+      description: 'Generation knobs, all optional — the defaults are the tuned starting point (served with UI
+
+        ranges at GET /v1/info).'
+      properties:
+        acoustic_temperature:
+          anyOf:
+          - maximum: 1.5
+            minimum: 0
+            type: number
+          - type: 'null'
+          description: Temperature for the voice's fine acoustic detail; null = follow `temperature`.
+          title: Acoustic Temperature
+        audio_quality:
+          default: high
+          description: 'Playback fidelity: high = full quality (default), lower tiers = smaller, lower-fidelity audio.'
+          enum:
+          - low
+          - medium
+          - high
+          title: Audio Quality
+          type: string
+        max_new_tokens:
+          default: 512
+          maximum: 2048
+          minimum: 16
+          title: Max New Tokens
+          type: integer
+        penalty_window:
+          default: 20
+          maximum: 80
+          minimum: 1
+          title: Penalty Window
+          type: integer
+        repetition_penalty:
+          default: 3
+          maximum: 6
+          minimum: 0
+          title: Repetition Penalty
+          type: number
+        temperature:
+          default: 0.7
+          maximum: 1.5
+          minimum: 0
+          title: Temperature
+          type: number
+        top_k:
+          anyOf:
+          - minimum: 1
+            type: integer
+          - type: 'null'
+          description: Sample from the k most-likely tokens; null = full vocabulary.
+          title: Top K
+      title: GenParamsModel
+      type: object
     ErrorBody:
       properties:
         message:
@@ -293,6 +377,37 @@ components:
       - text
       title: VoiceTtsRequest
       type: object
+    AudioPayload:
+      properties:
+        audio_quality:
+          description: Fidelity tier this audio was rendered at (high = full quality).
+          enum:
+          - low
+          - medium
+          - high
+          title: Audio Quality
+          type: string
+        data_b64:
+          description: Base64-encoded 16-bit PCM WAV (mono).
+          title: Data B64
+          type: string
+        format:
+          default: wav
+          description: Container/encoding of `data_b64` (16-bit PCM WAV).
+          title: Format
+          type: string
+        sample_rate:
+          description: Sample rate of the audio in Hz.
+          examples:
+          - 24000
+          title: Sample Rate
+          type: integer
+      required:
+      - sample_rate
+      - audio_quality
+      - data_b64
+      title: AudioPayload
+      type: object
     ConverseRequest:
       description: 'Complete the open (final) turn of a conversation.
 
@@ -344,6 +459,29 @@ components:
       - text
       title: ConverseReply
       type: object
+    ConverseResponse:
+      properties:
+        meta:
+          additionalProperties: true
+          title: Meta
+          type: object
+        model:
+          title: Model
+          type: string
+        reply:
+          $ref: '#/components/schemas/ConverseReply'
+        request_id:
+          title: Request Id
+          type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      required:
+      - request_id
+      - model
+      - reply
+      - usage
+      title: ConverseResponse
+      type: object
     Usage:
       properties:
         input_audio_seconds:
@@ -362,6 +500,15 @@ components:
           title: Output Audio Seconds
           type: number
       title: Usage
+      type: object
+    ErrorResponse:
+      description: The envelope returned for every 4xx/5xx.
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+      - error
+      title: ErrorResponse
       type: object
     ConversationTurnModel:
       properties:
@@ -442,153 +589,6 @@ components:
           description: Sample from the k most-likely tokens; null = full vocabulary.
           title: Top K
       title: VoiceGenParamsModel
-      type: object
-    ConverseResponse:
-      properties:
-        meta:
-          additionalProperties: true
-          title: Meta
-          type: object
-        model:
-          title: Model
-          type: string
-        reply:
-          $ref: '#/components/schemas/ConverseReply'
-        request_id:
-          title: Request Id
-          type: string
-        usage:
-          $ref: '#/components/schemas/Usage'
-      required:
-      - request_id
-      - model
-      - reply
-      - usage
-      title: ConverseResponse
-      type: object
-    GenParamsModel:
-      description: 'Generation knobs, all optional — the defaults are the tuned starting point (served with UI
-
-        ranges at GET /v1/info).'
-      properties:
-        acoustic_temperature:
-          anyOf:
-          - maximum: 1.5
-            minimum: 0
-            type: number
-          - type: 'null'
-          description: Temperature for the voice's fine acoustic detail; null = follow `temperature`.
-          title: Acoustic Temperature
-        audio_quality:
-          default: high
-          description: 'Playback fidelity: high = full quality (default), lower tiers = smaller, lower-fidelity audio.'
-          enum:
-          - low
-          - medium
-          - high
-          title: Audio Quality
-          type: string
-        max_new_tokens:
-          default: 512
-          maximum: 2048
-          minimum: 16
-          title: Max New Tokens
-          type: integer
-        penalty_window:
-          default: 20
-          maximum: 80
-          minimum: 1
-          title: Penalty Window
-          type: integer
-        repetition_penalty:
-          default: 3
-          maximum: 6
-          minimum: 0
-          title: Repetition Penalty
-          type: number
-        temperature:
-          default: 0.7
-          maximum: 1.5
-          minimum: 0
-          title: Temperature
-          type: number
-        top_k:
-          anyOf:
-          - minimum: 1
-            type: integer
-          - type: 'null'
-          description: Sample from the k most-likely tokens; null = full vocabulary.
-          title: Top K
-      title: GenParamsModel
-      type: object
-    ErrorResponse:
-      description: The envelope returned for every 4xx/5xx.
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorBody'
-      required:
-      - error
-      title: ErrorResponse
-      type: object
-    AudioPayload:
-      properties:
-        audio_quality:
-          description: Fidelity tier this audio was rendered at (high = full quality).
-          enum:
-          - low
-          - medium
-          - high
-          title: Audio Quality
-          type: string
-        data_b64:
-          description: Base64-encoded 16-bit PCM WAV (mono).
-          title: Data B64
-          type: string
-        format:
-          default: wav
-          description: Container/encoding of `data_b64` (16-bit PCM WAV).
-          title: Format
-          type: string
-        sample_rate:
-          description: Sample rate of the audio in Hz.
-          examples:
-          - 24000
-          title: Sample Rate
-          type: integer
-      required:
-      - sample_rate
-      - audio_quality
-      - data_b64
-      title: AudioPayload
-      type: object
-    TtsRequest:
-      properties:
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: Public model id (see GET /v1/models). Omit/null for the default model.
-          examples:
-          - kalpa-beta-v0.3
-          title: Model
-        params:
-          $ref: '#/components/schemas/GenParamsModel'
-        speaker:
-          default: '0'
-          description: Speaker role to render the text as (one of the model's `speakers`; see GET /v1/models).
-          title: Speaker
-          type: string
-        text:
-          description: Text to speak.
-          examples:
-          - Hey there! How are you doing today?
-          maxLength: 8000
-          minLength: 1
-          title: Text
-          type: string
-      required:
-      - text
-      title: TtsRequest
       type: object
   securitySchemes:
     ApiKeyAuth:
