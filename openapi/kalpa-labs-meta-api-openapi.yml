@@ -79,6 +79,35 @@ paths:
       - Meta
 components:
   schemas:
+    VoicesResponse:
+      properties:
+        data:
+          description: The available named voices.
+          items:
+            $ref: '#/components/schemas/VoiceCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: VoicesResponse
+      type: object
+    HealthResponse:
+      properties:
+        backend:
+          title: Backend
+          type: string
+        ready:
+          title: Ready
+          type: boolean
+        status:
+          default: ok
+          title: Status
+          type: string
+      required:
+      - backend
+      - ready
+      title: HealthResponse
+      type: object
     InfoResponse:
       properties:
         backend:
@@ -183,35 +212,6 @@ components:
       required:
       - data
       title: ModelsResponse
-      type: object
-    VoicesResponse:
-      properties:
-        data:
-          description: The available named voices.
-          items:
-            $ref: '#/components/schemas/VoiceCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: VoicesResponse
-      type: object
-    HealthResponse:
-      properties:
-        backend:
-          title: Backend
-          type: string
-        ready:
-          title: Ready
-          type: boolean
-        status:
-          default: ok
-          title: Status
-          type: string
-      required:
-      - backend
-      - ready
-      title: HealthResponse
       type: object
   securitySchemes:
     ApiKeyAuth:
