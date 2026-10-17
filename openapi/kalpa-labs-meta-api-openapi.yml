@@ -79,35 +79,6 @@ paths:
       - Meta
 components:
   schemas:
-    VoicesResponse:
-      properties:
-        data:
-          description: The available named voices.
-          items:
-            $ref: '#/components/schemas/VoiceCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: VoicesResponse
-      type: object
-    HealthResponse:
-      properties:
-        backend:
-          title: Backend
-          type: string
-        ready:
-          title: Ready
-          type: boolean
-        status:
-          default: ok
-          title: Status
-          type: string
-      required:
-      - backend
-      - ready
-      title: HealthResponse
-      type: object
     InfoResponse:
       properties:
         backend:
@@ -161,6 +132,47 @@ components:
       - gender
       title: VoiceCard
       type: object
+    VoicesResponse:
+      properties:
+        data:
+          description: The available named voices.
+          items:
+            $ref: '#/components/schemas/VoiceCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: VoicesResponse
+      type: object
+    HealthResponse:
+      properties:
+        backend:
+          title: Backend
+          type: string
+        ready:
+          title: Ready
+          type: boolean
+        status:
+          default: ok
+          title: Status
+          type: string
+      required:
+      - backend
+      - ready
+      title: HealthResponse
+      type: object
+    ModelsResponse:
+      properties:
+        data:
+          description: The available public models.
+          items:
+            $ref: '#/components/schemas/ModelCard'
+          title: Data
+          type: array
+      required:
+      - data
+      title: ModelsResponse
+      type: object
     ModelCard:
       description: One public model variant, as listed by ``GET /v1/models``.
       properties:
@@ -200,18 +212,6 @@ components:
       - modes
       - speakers
       title: ModelCard
-      type: object
-    ModelsResponse:
-      properties:
-        data:
-          description: The available public models.
-          items:
-            $ref: '#/components/schemas/ModelCard'
-          title: Data
-          type: array
-      required:
-      - data
-      title: ModelsResponse
       type: object
   securitySchemes:
     ApiKeyAuth:
