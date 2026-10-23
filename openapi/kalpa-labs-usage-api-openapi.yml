@@ -105,3 +105,9 @@ components:
       description: 'Your Kalpa API key, sent as `Authorization: Bearer <key>` (or the `X-API-Key` header).'
       scheme: bearer
       type: http
+x-provenance:
+  method: harvested
+  publisher: Kalpa Labs
+  source: https://api.kalpalabs.ai/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
